@@ -1,0 +1,23 @@
+FROM centos:7
+
+MAINTAINER Ray gb00300037@gmail.com
+
+ENV GOPATH /root/go
+ENV PATH /usr/local/go/bin:$PATH
+
+WORKDIR $GOPATH/src/ScrumMeeting
+
+COPY go1.10.linux-amd64.tar.gz /opt
+
+
+RUN tar -C /usr/local -xzf /opt/go1.10.linux-amd64.tar.gz \
+    && rm -f /opt/go1.10.linux-amd64.tar.gz
+
+RUN yum update -y \
+    && yum install -y git \
+    && go get -u github.com/kataras/iris \
+    && yum remove -y git
+
+COPY ScrumMeeting $GOPATH/src/ScrumMeeting
+
+CMD go run main.go

@@ -1,0 +1,12 @@
+FROM centos:7
+
+MAINTAINER Ray gb00300037@gmail.com
+
+RUN cd / \
+    && mkdir go
+
+WORKDIR /go
+
+COPY main /go
+
+CMD ["./main"]
