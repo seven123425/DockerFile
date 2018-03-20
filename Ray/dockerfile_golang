@@ -3,7 +3,7 @@ FROM centos:7
 MAINTAINER Ray gb00300037@gmail.com
 
 ENV GOPATH /root/go
-ENV PATH /usr/local/go/bin:$PATH
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
 WORKDIR $GOPATH/src/ScrumMeeting
 
@@ -15,9 +15,11 @@ RUN tar -C /usr/local -xzf /opt/go1.10.linux-amd64.tar.gz \
 
 RUN yum update -y \
     && yum install -y git \
-    && go get -u github.com/kataras/iris \
-    && yum remove -y git
+    && go get -u github.com/Masterminds/glide
 
 COPY ScrumMeeting $GOPATH/src/ScrumMeeting
+
+RUN glide install \
+    && yum remove -y git
 
 CMD go run main.go
